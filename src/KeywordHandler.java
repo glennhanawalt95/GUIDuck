@@ -6,7 +6,7 @@ import org.guiduck.data.Data;
 public class KeywordHandler {
 	
 	//perform appropriate actions for GUIDuck's keywords
-	public void handle(String[] args, int line) {
+	public int handle(String[] args, int line) {
 		switch(args[0]) {
 		//set <var> to <exp>: adds var -> value of <exp> in the current context
 		case "set":
@@ -26,15 +26,20 @@ public class KeywordHandler {
 		case "task":
 			addMethod(args[1], GUIDuckMain.line);
 			GUIDuckMain.advanceToEnd();
-			break;
+			return GUIDuckMain.line;
 		//Needs to throw error if it can't parse an int
 		case "do":
 			Integer iter = (Integer) evaluateExp(truncate(args, "do")).value();
 			LoopInfo newLoop = new LoopInfo(line, iter);
 			GUIDuckMain.loopInfo.push(newLoop);
-			GUIDuckMain.runLoop();
+			return GUIDuckMain.runLoop();
+		default:
+			if(isMethod(args[0])) {
+				GUIDuckMain.runMethod(args[0]);
+			}
 			break;
 		}
+		return line;
 	}
 
 	//Get subarray from start->array.length, used to isolate expressions	
@@ -54,6 +59,10 @@ public class KeywordHandler {
 			break;
 		}
 		return Arrays.copyOfRange(args, start, end);
+	}
+	
+	private Boolean isMethod(String name) {
+		return GUIDuckMain.methods.containsKey(name);
 	}
 	
 	private void addVariable(String var, Data data) {

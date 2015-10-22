@@ -23,25 +23,18 @@ public class GUIDuckMain {
 	public static void main(String[] args) {
 		initializeFields();
 		while (line < code.size) {
-			run(line);
+			line = run(line);
 			line++;
 		}
 		//DEBUG PRINT OF METHOD-MAPPINGS
 		System.out.println(methods);
 	}
 	
-	/* Executes current line of code */
-	private static void run(int i) {
+	/* Executes current line of code, returns int representing where to start further execution
+	 * (return val will be different than line param if method definition, loop, or conditional */
+	private static int run(int i) {
 		String[] codeLine = code.line(i);
-		if(isKeyWord(codeLine[0])) {
-			keywords.handle(codeLine, i);
-		}
-	}
-	
-	/* Tests if string is keyword, add more tests as you add keywords*/
-	private static boolean isKeyWord(String string) {
-		return (string.equals("print") || string.equals("set") 
-				|| string.equals("task")  || string.equals("do"));
+		return keywords.handle(codeLine, i);
 	}
 
 	/* Constructs all fields */
@@ -58,11 +51,11 @@ public class GUIDuckMain {
 	
 	/* Runs a loop; may recursively run nested loops. Returns control to main
 	 * at where loop ends */
-	public static void runLoop() {
+	public static int runLoop() {
 		LoopInfo loop = loopInfo.peek();
 		for(int i = 0; i < loop.iter; i++) {
 			for(int j = loop.start; j < loop.end; j++) {
-				run(j);
+				j = run(j);
 				//don't read the lines in the loop twice
 				if (!loop.equals(loopInfo.peek())) {
 					j = loopInfo.peek().end;
@@ -74,7 +67,7 @@ public class GUIDuckMain {
 		if (loopInfo.size() == 1) {
 			loopInfo.pop();
 		}
-		line = loop.end;
+		return loop.end;
 	}
 	
 	/* Skips the execution of a method at declaration time */
@@ -86,5 +79,17 @@ public class GUIDuckMain {
 	
 	public static boolean startsWith(int index, String term) {
 		return code.line(index)[0].equals(term);
+	}
+	
+	/* Runs a method */
+	public static void runMethod(String name) {
+		// InitParms method needed: break up parameters, evaluate, match to formal params
+		context.push(new Context()); 
+		int methodLine = methods.get(name) + 1;
+		while(!code.line(methodLine)[0].equals("end")) {
+			methodLine = run(methodLine);
+			methodLine++;
+		}	
+		context.pop();
 	}
 }
