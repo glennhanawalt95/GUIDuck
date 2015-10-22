@@ -5,8 +5,6 @@ end
 do 5 times
 	print 5
 	do 2 times
-		print 10
+		print 43
 	done
 done
-
-
