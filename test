@@ -1,0 +1,9 @@
+do 5 times
+	print 5
+	do 2 times
+		print 10
+	done
+done
+print
+set x to 69
+print x
