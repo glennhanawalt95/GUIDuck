@@ -1,3 +1,5 @@
+package org.guiduck.data;
+
 
 public class GInt implements Data {
 	private Integer data;

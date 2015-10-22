@@ -21,6 +21,7 @@ public class GUIDuckMain {
 		}
 		//DEBUG PRINT OF METHOD-MAPPINGS
 		System.out.println(loopInfo);
+		System.out.println(methods);
 	}
 	
 	//Executes current line of code.

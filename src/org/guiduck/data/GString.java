@@ -1,3 +1,5 @@
+package org.guiduck.data;
+
 
 public class GString implements Data {
 	private String data;

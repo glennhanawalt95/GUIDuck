@@ -1,6 +1,8 @@
 import java.util.Map;
 import java.util.TreeMap;
 
+import org.guiduck.data.Data;
+
 public class Context {
 	//Map of variables -> data
 	private Map<String, Data> variables;

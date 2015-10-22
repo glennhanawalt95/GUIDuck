@@ -1,3 +1,4 @@
+package org.guiduck.data;
 
 public interface Data {
 	public String toString();
