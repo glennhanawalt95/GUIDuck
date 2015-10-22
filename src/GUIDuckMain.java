@@ -5,12 +5,19 @@ import java.util.TreeMap;
 
 
 public class GUIDuckMain {
+	//Rename ActionHandler or EventHandler?
 	public static KeywordHandler keywords;
+	//needs to be updated to prototype ExpEvalTestMain
 	public static ExpressionEvaluator expressions;
+	//variable -> value mapping
 	public static Stack<Context> context;
+	//source code
 	public static Code code;
+	//current line to be executed
 	public static int line;
+	//method name -> addess mapping
 	public static Map<String, Integer> methods;
+	//start/stop address of current loops
 	public static Stack<LoopInfo> loopInfo;
 	
 	public static void main(String[] args) {
@@ -20,11 +27,10 @@ public class GUIDuckMain {
 			line++;
 		}
 		//DEBUG PRINT OF METHOD-MAPPINGS
-		System.out.println(loopInfo);
 		System.out.println(methods);
 	}
 	
-	//Executes current line of code.
+	/* Executes current line of code */
 	private static void run(int i) {
 		String[] codeLine = code.line(i);
 		if(isKeyWord(codeLine[0])) {
@@ -32,13 +38,13 @@ public class GUIDuckMain {
 		}
 	}
 	
-	//Tests if string is keyword, add more tests as you add keywords
+	/* Tests if string is keyword, add more tests as you add keywords*/
 	private static boolean isKeyWord(String string) {
 		return (string.equals("print") || string.equals("set") 
 				|| string.equals("task")  || string.equals("do"));
 	}
 
-	//Constructs all fields
+	/* Constructs all fields */
 	private static void initializeFields() {
 		keywords = new KeywordHandler();
 		expressions = new ExpressionEvaluator();
@@ -50,6 +56,8 @@ public class GUIDuckMain {
 		line = 0;
 	}
 	
+	/* Runs a loop; may recursively run nested loops. Returns control to main
+	 * at where loop ends */
 	public static void runLoop() {
 		LoopInfo loop = loopInfo.peek();
 		for(int i = 0; i < loop.iter; i++) {
@@ -69,7 +77,7 @@ public class GUIDuckMain {
 		line = loop.end;
 	}
 	
-	//Skips the execution of a method; used for avoid executing method declarations
+	/* Skips the execution of a method at declaration time */
 	public static void advanceToEnd() {
 		while(!code.line(line)[0].equals("end")) {
 			line++;
