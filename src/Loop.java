@@ -1,10 +1,10 @@
 
-public class LoopInfo {
+public class Loop {
 	public int start;
 	public int end;
 	public int iter;
 	
-	LoopInfo(int start, int iter) {
+	Loop(int start, int iter) {
 		this.start = start + 1;
 		this.iter = iter;
 		this.end = findEnd(this.start);
@@ -26,5 +26,17 @@ public class LoopInfo {
 	
 	public String toString() {
 		return this.start + "->" + this.end;
+	}
+
+	/* Runs a loop; may recursively run nested loops. Returns control to main
+	 * at where loop ends */
+	public int runLoop() {
+		GUIDuckMain.context.push(new Context(GUIDuckMain.context.peek()));
+		for(int i = 0; i < this.iter; i++) {
+			for(int j = this.start; j < this.end; j++) {
+				j = GUIDuckMain.run(j);
+			}
+		}
+		return this.end;
 	}
 }

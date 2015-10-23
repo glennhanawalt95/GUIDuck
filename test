@@ -1,12 +1,22 @@
 task example
-	print 3
+	print 69
+	do 2 times
+	 do 2 times
+	ex2
+	 done
+	done
 end
 
-do 5 times
-	print 5
+task ex2
+	print 96
+end
+
+do 2 times
 	do 2 times
-		print 10
+	print 2
 	done
 done
 
+example
 
+outer

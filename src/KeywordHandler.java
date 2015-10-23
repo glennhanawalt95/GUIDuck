@@ -24,18 +24,16 @@ public class KeywordHandler {
 		
 		//Adds name -> line # mapping for defined method, skips execution
 		case "task":
-			addMethod(args[1], GUIDuckMain.line);
-			GUIDuckMain.advanceToEnd();
-			return GUIDuckMain.line;
+			addMethod(args[1], new Method(args[1], line));
+			return GUIDuckMain.advanceToEnd(line);
 		//Needs to throw error if it can't parse an int
 		case "do":
 			Integer iter = (Integer) evaluateExp(truncate(args, "do")).value();
-			LoopInfo newLoop = new LoopInfo(line, iter);
-			GUIDuckMain.loopInfo.push(newLoop);
-			return GUIDuckMain.runLoop();
+			Loop newLoop = new Loop(line, iter);
+			return newLoop.runLoop();
 		default:
 			if(isMethod(args[0])) {
-				GUIDuckMain.runMethod(args[0]);
+				GUIDuckMain.methods.get(args[0]).runMethod(); //should eventually pass in parameter expression
 			}
 			break;
 		}
@@ -69,8 +67,8 @@ public class KeywordHandler {
 		GUIDuckMain.context.peek().addVariable(var, data);
 	}
 	
-	private void addMethod(String name, int line) {
-		GUIDuckMain.methods.put(name, line);
+	private void addMethod(String name, Method method) {
+		GUIDuckMain.methods.put(name, method);
 	}
 	
 	//ONLY INTEGERS NOW

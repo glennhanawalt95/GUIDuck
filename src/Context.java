@@ -11,6 +11,10 @@ public class Context {
 		this.variables = new TreeMap<String, Data>();
 	}
 	
+	public Context(Context copy) {
+		this.variables = new TreeMap<String, Data>(copy.variables);
+	}
+	
 	//Add variable->data mapping
 	public void addVariable(String var, Data data) {
 		this.variables.put(var, data);
