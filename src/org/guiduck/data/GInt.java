@@ -1,7 +1,7 @@
 package org.guiduck.data;
 
 
-public class GInt implements Data {
+public class GInt implements Data, Operable {
 	private Integer data;
 	
 	public GInt(Integer data) {
